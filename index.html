@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Text Editor</title>
-	<link href="css/photon.min.css" rel="stylesheet" />
+  <title>Text Editor</title>
+  <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Quicksand|Raleway|Roboto+Slab:100|Slabo+27px|Source+Code+Pro:200&display=swap" rel="stylesheet">
+  <link href="css/photon.min.css" rel="stylesheet" />
+  <!-- TODO Convert stylesheet to one stylsheets, use sass and gruny/gulp -->
+  <link href="css/style.css" rel="stylesheet" />
 </head>
 <body>
-	<h1>Electron app</h1>
+  <header class="toolbar toolbar-header">
+    <h1 class="title">Header with actions</h1>
+
+    <div class="toolbar-actions">
+      <div class="btn-group">
+        <button class="btn btn-default">
+          <span class="icon icon-plus"></span>
+        </button>
+        <button class="btn btn-default">
+          <span class="icon icon-minus"></span>
+        </button>
+      </div>
+
+      <button class="btn btn-default">
+        <span class="icon icon-home icon-text"></span>
+        Filters
+      </button>
+
+      <button class="btn btn-default pull-right">
+        <span class="icon icon-floppy"></span>
+        Save
+      </button>
+    </div>
+</header>
+
+<div class="window-content">
+  <textarea></textarea>
+</div>
+
 </body>
 </html>
