@@ -4,7 +4,7 @@
   <title>Text Editor</title>
   <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Quicksand|Raleway|Roboto+Slab:100|Slabo+27px|Source+Code+Pro:200&display=swap" rel="stylesheet">
   <link href="css/photon.min.css" rel="stylesheet" />
-  <!-- TODO Convert stylesheet to one stylsheets, use sass and gruny/gulp -->
+  <!-- TODO Convert stylesheet to one stylsheets, use sass and grunt/gulp -->
   <link href="css/style.css" rel="stylesheet" />
 </head>
 <body>
@@ -13,10 +13,10 @@
 
     <div class="toolbar-actions">
       <div class="btn-group">
-        <button class="btn btn-default">
+        <button class="btn btn-default" onclick="increaseFontSize()">
           <span class="icon icon-plus"></span>
         </button>
-        <button class="btn btn-default">
+        <button class="btn btn-default" onclick="decreaseFontSize()">
           <span class="icon icon-minus"></span>
         </button>
       </div>
@@ -36,6 +36,27 @@
 <div class="window-content">
   <textarea></textarea>
 </div>
+
+<script>
+  // TODO clean this up and place in its own js file
+  let textarea = document.querySelector('textarea');
+  let defaultFontSize = 20;
+  textarea.style.fontSize = defaultFontSize + 'px';
+
+  var increaseFontSize = function() {
+    changeFontSize(true);
+  }
+
+  var decreaseFontSize = function() {
+    changeFontSize(false);
+  }
+
+  var changeFontSize = function(plus) {
+    var currentFontSize = parseInt(textarea.style.fontSize.replace('px', ''));
+    var newFontSize = plus ? currentFontSize + 2 : currentFontSize - 2;
+    textarea.style.fontSize = newFontSize + 'px';
+  }
+</script>
 
 </body>
 </html>
