@@ -26,7 +26,7 @@
         Filters
       </button>
 
-      <button class="btn btn-default pull-right">
+      <button class="btn btn-default pull-right" onclick="saveText()">
         <span class="icon icon-floppy"></span>
         Save
       </button>
@@ -39,6 +39,9 @@
 
 <script>
   // TODO clean this up and place in its own js file
+  const electron = require('electron');
+  const {ipcRenderer} = electron;
+
   let textarea = document.querySelector('textarea');
   let defaultFontSize = 20;
   textarea.style.fontSize = defaultFontSize + 'px';
@@ -55,6 +58,12 @@
     var currentFontSize = parseInt(textarea.style.fontSize.replace('px', ''));
     var newFontSize = plus ? currentFontSize + 2 : currentFontSize - 2;
     textarea.style.fontSize = newFontSize + 'px';
+  }
+
+  var saveText = function() {
+    let text = textarea.value;
+    console.log('ipcRenderer', ipcRenderer)
+    ipcRenderer.send('save', text);
   }
 </script>
 
