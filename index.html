@@ -65,6 +65,15 @@
     console.log('ipcRenderer', ipcRenderer)
     ipcRenderer.send('save', text);
   }
+
+  ipcRenderer.on('saved', (event, results) => {
+    if (results === 'success') { // TODO hardcoded value?
+      textarea.style.backgroundColor = 'green';
+    } else {
+      textarea.style.backgroundColor = 'red';
+    }
+    // TODO make these a pop up instead of colour change
+  });
 </script>
 
 </body>

@@ -15,7 +15,10 @@ app.on('ready', () => {
 ipcMain.on('save', (event, text) => {
 	var saveFile = (fullpath) => {
 		fs.writeFile(fullpath, text, (err) => {
-			err ? console.log('... There was an error', err) : console.log(fullpath, 'File has been saved');
+			if (err) console.log('... There was an error', err);
+			console.log(fullpath, 'File has been saved');
+			console.log('win', win)
+			win.webContents.send('saved', 'success');
 		});
 	}
 	if (!filePath) {
