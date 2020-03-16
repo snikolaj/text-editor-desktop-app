@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Text Editor</title>
+  <title>Pazar3 and Reklama5 PC parts search engine</title>
   <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Quicksand|Raleway|Roboto+Slab:100|Slabo+27px|Source+Code+Pro:200&display=swap" rel="stylesheet">
   <link href="css/photon.min.css" rel="stylesheet" />
   <!-- TODO Convert stylesheet to one stylsheets, use sass and grunt/gulp -->
@@ -9,8 +9,6 @@
 </head>
 <body>
   <header class="toolbar toolbar-header">
-    <h1 class="title">Header with actions</h1>
-
     <div class="toolbar-actions">
       <div class="btn-group">
         <button class="btn btn-default" onclick="increaseFontSize()">
@@ -21,14 +19,16 @@
         </button>
       </div>
 
-      <button class="btn btn-default">
-        <span class="icon icon-home icon-text"></span>
-        Filters
-      </button>
+      <input type="search" id="gsearch" name="gsearch">
 
+      <button class="btn btn-default" onclick="textCheck()">
+        <span class="icon icon-home icon-text"></span>
+        Search
+      </button>
+      
       <button class="btn btn-default pull-right" onclick="saveText()">
         <span class="icon icon-floppy"></span>
-        Save
+        Open
       </button>
     </div>
 </header>
@@ -43,8 +43,40 @@
   const {ipcRenderer} = electron;
 
   let textarea = document.querySelector('textarea');
+  let searchbar = document.querySelector('#gsearch');
+
   let defaultFontSize = 20;
   textarea.style.fontSize = defaultFontSize + 'px';
+
+
+  var prodArr = [];
+
+
+  class Product{
+    constructor(item, price, link, location){
+      this._item = item;
+      this._price = price;
+      this._link = link;
+      this._location = location;
+    }
+
+    get item(){
+      return this._item;
+    }
+    
+    get price(){
+      return this._price;
+    }
+    
+    get link(){
+      return this._link;
+    }
+    
+    get location(){
+      return this._location;
+    }
+  }
+
 
   var increaseFontSize = function() {
     changeFontSize(true);
@@ -52,6 +84,32 @@
 
   var decreaseFontSize = function() {
     changeFontSize(false);
+  }
+  
+  var textCheck = function() {
+    var sbval = searchbar.value;
+    var str = "";
+    var retVal = "";
+
+    /*if(taval != ""){
+      for(var i = 0; i < taval.length; i++){
+        if(taval[i] != '\n'){
+          str += taval[i];
+        }else{
+          if(str.toLowerCase().includes(sbval.toLowerCase())){
+            retVal += str + '\n';
+          }
+          str = "";
+        }
+      }
+    }*/
+    for(var i = 0; i < prodArr.length; i++){
+      if(prodArr[i].item.toLowerCase().includes(sbval.toLowerCase())){
+        retVal += prodArr[i].item + prodArr[i].price + prodArr[i].link + prodArr[i].location;
+      }
+    }
+
+    textarea.value = retVal;
   }
 
   var changeFontSize = function(plus) {
@@ -67,13 +125,42 @@
   }
 
   ipcRenderer.on('saved', (event, results) => {
-    if (results === 'success') { // TODO hardcoded value?
-      textarea.style.backgroundColor = 'green';
-    } else {
-      textarea.style.backgroundColor = 'red';
-    }
-    // TODO make these a pop up instead of colour change
-  });
+      textarea.value = results;
+
+      var item;
+      var price;
+      var link;
+      var location;
+      var line = 0;
+
+      
+      var tempStr = "";
+      for(var i = 0; i < results.length; i++){
+        if(results[i] == '\n'){
+          switch(line % 4){
+            case 0:
+              item = tempStr;
+              tempStr = "";
+              break;
+            case 1:
+              price = tempStr;
+              tempStr = "";
+              break;
+            case 2:
+              link = tempStr;
+              tempStr = "";
+              break;
+            case 3:
+              prod = new Product(item, price, link, tempStr);
+              prodArr.push(prod);
+              tempStr = "";
+              break;
+          }
+          line++;
+        }
+        tempStr += results[i];
+      }
+  })
 </script>
 
 </body>

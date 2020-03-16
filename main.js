@@ -8,11 +8,28 @@ app.on('ready', () => {
 	win = new BrowserWindow({
 		webPreferences: { nodeIntegration: true }
 	});
-	win.webContents.openDevTools();
 	win.loadFile('index.html');
 });
 
 ipcMain.on('save', (event, text) => {
+	const { exec } = require("child_process");
+
+	exec("run.bat", (error, stdout, stderr) => {
+		if (error) {
+			console.log(`error: ${error.message}`);
+			return;
+		}
+		if (stderr) {
+			console.log(`stderr: ${stderr}`);
+			return;
+		}
+		win.webContents.send('saved', stdout);
+	});
+
+	//win.webContents.send('saved', fs.readFileSync(stdout));
+});
+
+/*ipcMain.on('save', (event, text) => {
 	var saveFile = (fullpath) => {
 		fs.writeFile(fullpath, text, (err) => {
 			if (err) console.log('... There was an error', err);
@@ -31,4 +48,4 @@ ipcMain.on('save', (event, text) => {
 	} else {
 		saveFile(filePath);
 	}
-});
+});*/
