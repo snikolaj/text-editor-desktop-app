@@ -66,7 +66,7 @@ def cyrtolat(string):
         'Н':'N',
         'М':'M',
 
-        '-':'-' # they may look the same, but one is unicode and that breaks the application lmao
+        '\u2011':'-' # they may look the same, but one is unicode and that breaks the application lmao
     }
     retStr = ""
     for i in range(len(string)):
