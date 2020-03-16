@@ -3,4 +3,4 @@ Not meant to be a serious project, just all round practice of the programming la
 Hope someone finds it useful.
 -Stefan
 
-to run it just git clone, npm install and npm run
+to run it just git clone, npm install and npm start
