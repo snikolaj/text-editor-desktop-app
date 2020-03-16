@@ -1,16 +1,4 @@
-README
-======
-
-
-Text Editor
------------
-
-Made using Electron, Photon UI Kit
-
-To install packages, run `npm install` from command line.
-
-To start app, run `npm start` from command line.
-
-
-
-Add how to view dev tools (top)
+Fork of a simple text editor turned into a PC parts search engine for the websites pazar3.mk and reklama5.mk.
+Not meant to be a serious project, just all round practice of the programming languages involved.
+Hope someone finds it useful.
+-Stefan
