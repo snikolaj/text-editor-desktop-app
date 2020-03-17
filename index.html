@@ -34,15 +34,17 @@
 </header>
 
 <div class="window-content">
-  <textarea></textarea>
+  <p id="text-area">Hello</p>
 </div>
 
 <script>
   // TODO clean this up and place in its own js file
   const electron = require('electron');
+  const {shell} = require('electron');
   const {ipcRenderer} = electron;
 
-  let textarea = document.querySelector('textarea');
+  let textarea = document.querySelector('#text-area');
+  
   let searchbar = document.querySelector('#gsearch');
 
   let defaultFontSize = 20;
@@ -50,7 +52,6 @@
 
 
   var prodArr = [];
-
 
   class Product{
     constructor(item, price, link, location){
@@ -77,6 +78,9 @@
     }
   }
 
+  var opensite = function(link){
+    shell.openExternal(link);
+  }
 
   var increaseFontSize = function() {
     changeFontSize(true);
@@ -103,13 +107,12 @@
         }
       }
     }*/
+    textarea.innerHTML = "";
     for(var i = 0; i < prodArr.length; i++){
       if(prodArr[i].item.toLowerCase().includes(sbval.toLowerCase())){
-        retVal += prodArr[i].item + prodArr[i].price + prodArr[i].link + prodArr[i].location;
+        textarea.innerHTML += "<a href=\"" + "https://" + prodArr[i].link + "\" target=\"_blank\" onclick=\"" + function() { shell.openExternal("https://" + prodArr[i].link) } + "\" />" + prodArr[i].item + "</a><br>" + prodArr[i].price + "<br>" + prodArr[i].location + "<br>";
       }
     }
-
-    textarea.value = retVal;
   }
 
   var changeFontSize = function(plus) {
@@ -124,9 +127,11 @@
     ipcRenderer.send('save', text);
   }
 
-  ipcRenderer.on('saved', (event, results) => {
-      textarea.value = results;
+  
 
+  ipcRenderer.on('saved', (event, results) => {
+      //textarea.innerHTML = results;
+      console.log(textarea.value);
       var item;
       var price;
       var link;
@@ -159,6 +164,10 @@
           line++;
         }
         tempStr += results[i];
+      }
+      textarea.innerHTML = "";
+      for(var i = 0; i < prodArr.length; i++){
+        textarea.innerHTML += "<a href=\"" + "https://" + prodArr[i].link + "\" target=\"_blank\" onclick=\"" + function() { shell.openExternal("https://" + prodArr[i].link) } + "\" />" + prodArr[i].item + "</a><br>" + prodArr[i].price + "<br>" + prodArr[i].location + "<br>";
       }
   })
 </script>
